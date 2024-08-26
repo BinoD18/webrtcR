@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: webrtcR
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    build:
+      packages:
+        - ffmpeg
