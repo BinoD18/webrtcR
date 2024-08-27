@@ -9,6 +9,22 @@ const { exec } = require('child_process');
 
 app.use(express.static('public'));
 
+app.get('/stream', (req, res) => {
+  const inputStream = 'https://webrtcr.onrender.com/';
+  const command = `ffmpeg -i ${inputStream} -codec: copy -start_number 0 -hls_time 10 -hls_list_size 0 -f hls output.m3u8`;
+
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing FFmpeg: ${error.message}`);
+      res.status(500).send('Error processing stream');
+      return;
+    }
+    console.log(`FFmpeg output: ${stdout}`);
+    res.send('Stream processed successfully');
+  });
+});
+
+
 io.on('connection', socket => {
     console.log('New user connected');
 
